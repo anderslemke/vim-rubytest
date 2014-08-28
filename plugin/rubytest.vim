@@ -11,6 +11,12 @@ let rubytest_loaded = 1
 if !exists("g:rubytest_in_quickfix")
   let g:rubytest_in_quickfix = 0
 endif
+if !exists("g:rubytest_in_dispatch")
+  let g:rubytest_in_dispatch = 0
+endif
+if !exists("g:rubytest_in_quickfix")
+  let g:rubytest_in_quickfix = 0
+endif
 if !exists("g:rubytest_spec_drb")
   let g:rubytest_spec_drb = 0
 endif
@@ -68,6 +74,20 @@ function s:ExecTest(cmd)
     redraw!
     botright copen
 
+    let &efm = s:oldefm
+  elseif g:rubytest_in_dispatch != 0
+    let s:oldefm = &efm
+    let &efm = s:efm . s:efm_backtrace . ',' . s:efm_ruby . ',' . s:oldefm . ',%-G%.%#'
+
+    execute ":Dispatch " . cmd
+    let &efm = s:oldefm
+  elseif g:rubytest_in_vimux != 0
+    echo "Running... " . cmd
+
+    let s:oldefm = &efm
+    let &efm = s:efm . s:efm_backtrace . ',' . s:efm_ruby . ',' . s:oldefm . ',%-G%.%#'
+
+    execute ":VimuxRunCommand '" . cmd . "'"
     let &efm = s:oldefm
   else
     exe "!echo '" . cmd . "' && " . cmd
