@@ -8,8 +8,8 @@ if exists("rubytest_loaded")
 endif
 let rubytest_loaded = 1
 
-if !exists("g:rubytest_in_quickfix")
-  let g:rubytest_in_quickfix = 0
+if !exists("g:rubytest_in_vimux")
+  let g:rubytest_in_vimux = 0
 endif
 if !exists("g:rubytest_in_dispatch")
   let g:rubytest_in_dispatch = 0
